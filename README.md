@@ -9,6 +9,7 @@ pip install github_subdir_dl
 ```
 github_subdir_dl <github_subdir_url>
 ```
-It will not download binary files
-Might occur a timeout (wip)
+It will not download binary files.
+
+Might get timeout by GitHub (wip)
 
