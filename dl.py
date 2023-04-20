@@ -10,6 +10,7 @@ from os.path import basename, relpath
 from os import sys, mkdir
 
 import aiohttp
+import aiofiles
 
 API_VERSION = "2022-11-28"
 NAME = "Github subdir downloader"
@@ -122,8 +123,8 @@ class Downloader:
                 return
                 ...
 
-        with open(self._relative_path(object["path"]), "wb+") as fp:
-            fp.write(content)
+        async with aiofiles.open(self._relative_path(object["path"]), "wb+") as fp:
+            await fp.write(content)
         
         print(f"Got: {self._relative_path(object['path'])}")
 
