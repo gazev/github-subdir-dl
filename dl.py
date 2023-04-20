@@ -96,10 +96,11 @@ class Downloader:
         async with self.session.get(object["url"]) as resp:
             if resp.status != 200:
                 print(f"Unsuccesful request to {object['url']}")
-                print(f"Server message: {await resp.json()}")
-                print(f"Response headers: {str(resp.headers)}")
-                await self._close_session()
+                # Log this with logging
+                #print(f"Server message: {await resp.json()}")
+                #print(f"Response headers: {str(resp.headers)}")
                 return
+
             objects = await resp.json()
         
         tasks = [] 
@@ -115,7 +116,7 @@ class Downloader:
             try:
                 content = await resp.content.read()
             except UnicodeDecodeError:
-                # unsure how this might happen but is reserved
+                # unsure how this might happen but it is safeguarded here 
                 print(f"Failed downloading file {object['path']}")
                 return
                 ...
