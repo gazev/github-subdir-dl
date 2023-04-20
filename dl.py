@@ -57,13 +57,14 @@ class Downloader:
                             })
         
     async def run(self):
-        print(self.target_dir.endpoint)
         async with self.session.get(self.target_dir.endpoint) as resp:
             if resp.status != 200:
-                print("Unsuccesful request")
-                print(f"Server message: {await resp.json()}")
-                print(f"Response headers: {str(resp.headers)}")
-                return
+                print("Unsuccesful request\n")
+                print(f"Server message: {await resp.json()}\n")
+                print(f"Response headers: {resp.headers}\n")
+                await self._close_session()
+                exit(0)
+
             objects = await resp.json()
 
         # if we didn't receive a json list of objects
@@ -71,8 +72,6 @@ class Downloader:
             return
             print("Either this URL is not valid/supported or this program is outdaded (check if GitHub API verison equals {API_VERSION})")
             print("Note: If you are trying to download a single file just do it yourself! (or nested directories with a single file)")
-
-        print(self.target_dir)
 
         # create directory we are downloading 
         mkdir(self.target_dir.name)
@@ -140,16 +139,19 @@ async def run_it(target,  *, token=None):
 
 
 if __name__ == '__main__':
+    # TODO use argparser
+    if sys.argv[1] == "--help" or sys.argv[1] == "-h":
+        print("usage: python dl.py <github repo sub folder url> [personal acess token]")
+        exit(0)
+
     target = TargetDir.from_github_url(sys.argv[1])
 
-    # TODO use argparser
     try:
         token = sys.argv[2]
     except IndexError:
         token = None
     
     asyncio.run(run_it(target, token=token))
-
 
 
 
