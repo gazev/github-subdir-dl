@@ -66,12 +66,13 @@ class Downloader:
                 exit(0)
 
             objects = await resp.json()
-
+        
         # if we didn't receive a json list of objects
         if not isinstance(objects, list):
-            return
-            print("Either this URL is not valid/supported or this program is outdaded (check if GitHub API verison equals {API_VERSION})")
+            print(f"Either this URL is not valid/supported or this program is outdaded (check if GitHub API verison equals {API_VERSION})")
             print("Note: If you are trying to download a single file just do it yourself! (or nested directories with a single file)")
+            await self._close_session()
+            return
 
         # create directory we are downloading 
         mkdir(self.target_dir.name)
