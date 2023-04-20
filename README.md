@@ -1,6 +1,6 @@
 # NOTICE
 This has been refactored to use the GitHub API, the standalone script is located in the `new` branch. Soon this repo will be tidied
-
+---
 This was a gist I started using quite a bit and I though packaging it would make it easier
 
 ## Installation
