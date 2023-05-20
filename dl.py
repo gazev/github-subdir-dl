@@ -114,14 +114,18 @@ class Downloader:
 
 
     async def download_file(self, object):
-        async with self.session.get(object["download_url"]) as resp:
-            try:
-                content = await resp.content.read()
-            except UnicodeDecodeError:
-                # unsure how this might happen but it is safeguarded here 
-                print(f"Failed downloading file {object['path']}")
-                return
-                ...
+        try:
+            async with self.session.get(object["download_url"]) as resp:
+                try:
+                    content = await resp.content.read()
+                except UnicodeDecodeError:
+                    # unsure how this might happen but it is safeguarded here 
+                    print(f"Failed downloading file {object['path']}")
+                    return
+                    ...
+        except TypeError:
+            print(f"Failed {object['path']}")
+            return
 
         async with aiofiles.open(self._relative_path(object["path"]), "wb+") as fp:
             await fp.write(content)
@@ -155,6 +159,3 @@ if __name__ == '__main__':
         token = None
     
     asyncio.run(run_it(target, token=token))
-
-
-
